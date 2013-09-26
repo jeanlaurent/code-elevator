@@ -63,15 +63,17 @@ public class MyEngine implements ElevatorEngine {
 			open = false;
 			return Command.CLOSE;
 		}
-		int uppersToGo = upperFloorsSize(floorsToGo);
-		int downersToGo = downerFloorsSize(floorsToGo);
-		if (uppersToGo > downersToGo) {
-			currentFloor++;
-			return Command.UP;
-		}
-		if (uppersToGo < downersToGo) {
-			currentFloor--;
-			return Command.DOWN;
+		if (usersIn > 0) {
+			int uppersToGo = upperFloorsSize(floorsToGo);
+			int downersToGo = downerFloorsSize(floorsToGo);
+			if (uppersToGo > downersToGo) {
+				currentFloor++;
+				return Command.UP;
+			}
+			if (uppersToGo < downersToGo) {
+				currentFloor--;
+				return Command.DOWN;
+			}
 		}
 		int uppersToPick = upperFloorsSize(floorsToPick);
 		int downersToPick = downerFloorsSize(floorsToPick);
