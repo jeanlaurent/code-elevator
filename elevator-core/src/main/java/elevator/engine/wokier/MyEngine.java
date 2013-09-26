@@ -52,7 +52,7 @@ public class MyEngine implements ElevatorEngine {
 
 	@Override
 	public Command nextCommand() throws ElevatorIsBrokenException {
-		if (floorsToGo.contains(currentFloor) || floorsToPick.contains(currentFloor)  && !open) {
+		if (floorsToGo.contains(currentFloor) || floorsToPick.contains(currentFloor) && !open) {
 			floorsToPick.remove(currentFloor);
 			floorsToGo.remove(currentFloor);
 			possibleFloorsToGo.remove(currentFloor);
@@ -63,54 +63,55 @@ public class MyEngine implements ElevatorEngine {
 			open = false;
 			return Command.CLOSE;
 		}
-        int uppersToGo = upperFloorsSize(floorsToGo);
-        int downersToGo = downerFloorsSize(floorsToGo);
-        if (uppersToGo > downersToGo) {
+		int uppersToGo = upperFloorsSize(floorsToGo);
+		int downersToGo = downerFloorsSize(floorsToGo);
+		if (uppersToGo > downersToGo) {
 			currentFloor++;
 			return Command.UP;
 		}
-        if (uppersToGo < downersToGo) {
-            currentFloor--;
-            return Command.DOWN;
-        }
-        int uppersToPick = upperFloorsSize(floorsToPick);
-        int downersToPick = downerFloorsSize(floorsToPick);
-        if (uppersToPick > downersToPick) {
-            currentFloor++;
-            return Command.UP;
-        }
-        if (uppersToPick < downersToPick) {
-            currentFloor--;
-            return Command.DOWN;
-        }
+		if (uppersToGo < downersToGo) {
+			currentFloor--;
+			return Command.DOWN;
+		}
+		int uppersToPick = upperFloorsSize(floorsToPick);
+		int downersToPick = downerFloorsSize(floorsToPick);
+		if (uppersToPick > downersToPick) {
+			currentFloor++;
+			return Command.UP;
+		}
+		if (uppersToPick < downersToPick) {
+			currentFloor--;
+			return Command.DOWN;
+		}
 		return Command.NOTHING;
 
 	}
 
 	private int downerFloorsSize(Set floors) {
-        return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
-            @Override
-            public boolean apply( java.lang.Integer input) {
-                return input < currentFloor;
-            }
-        })).size();
+		return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
+			@Override
+			public boolean apply(java.lang.Integer input) {
+				return input < currentFloor;
+			}
+		})).size();
 	}
 
 	private int upperFloorsSize(Set floors) {
-        return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
-            @Override
-            public boolean apply(java.lang.Integer input) {
-                return input > currentFloor;
-            }
-        })).size();
+		return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
+			@Override
+			public boolean apply(java.lang.Integer input) {
+				return input > currentFloor;
+			}
+		})).size();
 	}
 
 	@Override
 	public ElevatorEngine reset(String cause) throws ElevatorIsBrokenException {
 		currentFloor = LOWER_FLOOR;
 		usersIn = 0;
-		floorsToGo = new HashSet<>();
-		possibleFloorsToGo = new HashSet<>();
+		floorsToGo.clear();
+		floorsToPick.clear();
+		possibleFloorsToGo.clear();
 		return null;
 	}
 
