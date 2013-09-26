@@ -67,39 +67,48 @@ public class MyEngine implements ElevatorEngine {
 			int uppersToGo = upperFloorsSize(floorsToGo);
 			int downersToGo = downerFloorsSize(floorsToGo);
 			if (uppersToGo > downersToGo) {
-				setCurrentFloor(currentFloor + 1);
-				return Command.UP;
+                currentFloor ++;
+                return Command.UP;
 			}
 			if (uppersToGo < downersToGo) {
-				setCurrentFloor(currentFloor - 1);
-				return Command.DOWN;
+                currentFloor --;
+                return Command.DOWN;
 			}
 		}
 		int uppersToPick = upperFloorsSize(floorsToPick);
 		int downersToPick = downerFloorsSize(floorsToPick);
 		if (uppersToPick > downersToPick) {
-			setCurrentFloor(currentFloor + 1);
+			currentFloor ++;
 			return Command.UP;
 		}
 		if (uppersToPick < downersToPick) {
-			setCurrentFloor(currentFloor - 1);
+			currentFloor --;
 			return Command.DOWN;
 		}
-        if(nearest()<currentFloor)  {
+		if (nearest() < currentFloor) {
+            currentFloor --;
             return Command.DOWN;
-        }
-		return Command.UP;
+		}
+		if (currentFloor < HIGHER_FLOOR) {
+            currentFloor ++;
+            return Command.UP;
+		}
+		return Command.NOTHING;
 
 	}
 
-    private int nearest()     {
-         return Collections.min(Sets.union(floorsToGo, floorsToPick), new Comparator<Integer>() {
-             @Override
-             public int compare(Integer o1, Integer o2) {
-                return  new Integer(Math.abs(o1 - currentFloor)).compareTo(new Integer( Math.abs(o2 - currentFloor)));
-             }
-         });
-    }
+	private int nearest() {
+		Sets.SetView<Integer> allFloors = Sets.union(floorsToGo, floorsToPick);
+		if (allFloors.isEmpty()) {
+			return currentFloor;
+		}
+		return Collections.min(allFloors, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return new Integer(Math.abs(o1 - currentFloor)).compareTo(new Integer(Math.abs(o2 - currentFloor)));
+			}
+		});
+	}
 
 	private int downerFloorsSize(Set floors) {
 		return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
@@ -145,7 +154,7 @@ public class MyEngine implements ElevatorEngine {
 		return currentFloor;
 	}
 
-    void setCurrentFloor(int currentFloor) {
-        this.currentFloor = currentFloor;
-    }
+	void setCurrentFloor(int currentFloor) {
+		this.currentFloor = currentFloor;
+	}
 }
