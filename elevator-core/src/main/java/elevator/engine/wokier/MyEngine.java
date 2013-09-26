@@ -5,7 +5,6 @@ import java.util.*;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import com.sun.istack.internal.Nullable;
 
 import elevator.Command;
 import elevator.Direction;
@@ -79,21 +78,21 @@ public class MyEngine implements ElevatorEngine {
 	}
 
 	private int downerFloorsToGoSize() {
-		return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
-			@Override
-			public boolean apply(@Nullable java.lang.Integer input) {
-				return input < currentFloor;
-			}
-		})).size();
+        return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
+            @Override
+            public boolean apply( java.lang.Integer input) {
+                return input < currentFloor;
+            }
+        })).size();
 	}
 
 	private int upperFloorsToGoSize() {
-		return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
-			@Override
-			public boolean apply(@Nullable java.lang.Integer input) {
-				return input > currentFloor;
-			}
-		})).size();
+        return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
+            @Override
+            public boolean apply(java.lang.Integer input) {
+                return input > currentFloor;
+            }
+        })).size();
 	}
 
 	@Override
