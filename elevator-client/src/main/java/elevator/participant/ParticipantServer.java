@@ -55,7 +55,15 @@ public class ParticipantServer extends AbstractHandler {
                 logger.info(format("%s floorToGo %d", target, floorToGo));
                 break;
             case "/userHasEntered":
+                synchronized (elevator) {
+                    elevator.userHasEntered(null);
+                }
+                logger.info(target);
+                break;
             case "/userHasExited":
+                synchronized (elevator) {
+                    elevator.userHasExited(null);
+                }
                 logger.info(target);
                 break;
             case "/reset":

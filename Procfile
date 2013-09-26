@@ -1,0 +1,1 @@
+web: java -jar elevator-client/target/elevator-client-1.0-SNAPSHOT-jar-with-dependencies.jar $PORT MyEngine
