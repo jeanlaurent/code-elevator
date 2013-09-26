@@ -17,7 +17,7 @@ import elevator.exception.ElevatorIsBrokenException;
  */
 public class MyEngine implements ElevatorEngine {
 
-	int currentFloor = LOWER_FLOOR;
+	private int currentFloor = LOWER_FLOOR;
 	int usersIn;
 	Set<Integer> floorsToPick = new LinkedHashSet<>();
 	Set<Integer> floorsToGo = new HashSet<>();
@@ -67,27 +67,39 @@ public class MyEngine implements ElevatorEngine {
 			int uppersToGo = upperFloorsSize(floorsToGo);
 			int downersToGo = downerFloorsSize(floorsToGo);
 			if (uppersToGo > downersToGo) {
-				currentFloor++;
+				setCurrentFloor(currentFloor + 1);
 				return Command.UP;
 			}
 			if (uppersToGo < downersToGo) {
-				currentFloor--;
+				setCurrentFloor(currentFloor - 1);
 				return Command.DOWN;
 			}
 		}
 		int uppersToPick = upperFloorsSize(floorsToPick);
 		int downersToPick = downerFloorsSize(floorsToPick);
 		if (uppersToPick > downersToPick) {
-			currentFloor++;
+			setCurrentFloor(currentFloor + 1);
 			return Command.UP;
 		}
 		if (uppersToPick < downersToPick) {
-			currentFloor--;
+			setCurrentFloor(currentFloor - 1);
 			return Command.DOWN;
 		}
-		return Command.NOTHING;
+        if(nearest()<currentFloor)  {
+            return Command.DOWN;
+        }
+		return Command.UP;
 
 	}
+
+    private int nearest()     {
+         return Collections.min(Sets.union(floorsToGo, floorsToPick), new Comparator<Integer>() {
+             @Override
+             public int compare(Integer o1, Integer o2) {
+                return  new Integer(Math.abs(o1 - currentFloor)).compareTo(new Integer( Math.abs(o2 - currentFloor)));
+             }
+         });
+    }
 
 	private int downerFloorsSize(Set floors) {
 		return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
@@ -109,7 +121,7 @@ public class MyEngine implements ElevatorEngine {
 
 	@Override
 	public ElevatorEngine reset(String cause) throws ElevatorIsBrokenException {
-		currentFloor = LOWER_FLOOR;
+		setCurrentFloor(LOWER_FLOOR);
 		usersIn = 0;
 		floorsToGo.clear();
 		floorsToPick.clear();
@@ -132,4 +144,8 @@ public class MyEngine implements ElevatorEngine {
 	Integer getCurrentFloor() {
 		return currentFloor;
 	}
+
+    void setCurrentFloor(int currentFloor) {
+        this.currentFloor = currentFloor;
+    }
 }

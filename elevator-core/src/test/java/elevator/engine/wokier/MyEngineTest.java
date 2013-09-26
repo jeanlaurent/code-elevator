@@ -48,6 +48,22 @@ public class MyEngineTest {
         Assertions.assertThat(engine.nextCommand()).isEqualTo(Command.OPEN);
         engine.userHasExited(null);
         engine.userHasExited(null);
-
     }
+
+    @Test
+    public void test_goToTheNearestUP() {
+        engine.setCurrentFloor(3);
+        engine.call(0, Direction.UP);
+        engine.call(4, Direction.UP);
+        Assertions.assertThat(engine.nextCommand()).isEqualTo(Command.UP);
+    }
+
+    @Test
+    public void test_goToTheNearestDOWN() {
+        engine.setCurrentFloor(2);
+        engine.call(0, Direction.UP);
+        engine.call(4, Direction.UP);
+        Assertions.assertThat(engine.nextCommand()).isEqualTo(Command.DOWN);
+    }
+
 }
