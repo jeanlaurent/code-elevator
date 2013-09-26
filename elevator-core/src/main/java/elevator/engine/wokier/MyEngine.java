@@ -63,13 +63,23 @@ public class MyEngine implements ElevatorEngine {
 			open = false;
 			return Command.CLOSE;
 		}
-        int uppers = upperFloorsToGoSize();
-        int downers = downerFloorsToGoSize();
-        if (uppers > downers) {
+        int uppersToGo = upperFloorsSize(floorsToGo);
+        int downersToGo = downerFloorsSize(floorsToGo);
+        if (uppersToGo > downersToGo) {
 			currentFloor++;
 			return Command.UP;
 		}
-        if (uppers < downers) {
+        if (uppersToGo < downersToGo) {
+            currentFloor--;
+            return Command.DOWN;
+        }
+        int uppersToPick = upperFloorsSize(floorsToPick);
+        int downersToPick = downerFloorsSize(floorsToPick);
+        if (uppersToPick > downersToPick) {
+            currentFloor++;
+            return Command.UP;
+        }
+        if (uppersToPick < downersToPick) {
             currentFloor--;
             return Command.DOWN;
         }
@@ -77,8 +87,8 @@ public class MyEngine implements ElevatorEngine {
 
 	}
 
-	private int downerFloorsToGoSize() {
-        return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
+	private int downerFloorsSize(Set floors) {
+        return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
             @Override
             public boolean apply( java.lang.Integer input) {
                 return input < currentFloor;
@@ -86,8 +96,8 @@ public class MyEngine implements ElevatorEngine {
         })).size();
 	}
 
-	private int upperFloorsToGoSize() {
-        return Sets.newHashSet(Iterables.filter(floorsToGo, new Predicate<Integer>() {
+	private int upperFloorsSize(Set floors) {
+        return Sets.newHashSet(Iterables.filter(floors, new Predicate<Integer>() {
             @Override
             public boolean apply(java.lang.Integer input) {
                 return input > currentFloor;
