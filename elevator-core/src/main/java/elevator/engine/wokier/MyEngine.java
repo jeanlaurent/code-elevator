@@ -59,7 +59,7 @@ public class MyEngine implements ElevatorEngine {
 			open = true;
 			return Command.OPEN;
 		}
-		if (open && usersIn > 0) {
+		if (open) {
 			open = false;
 			return Command.CLOSE;
 		}
