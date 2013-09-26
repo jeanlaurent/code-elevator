@@ -32,6 +32,9 @@ public class ParticipantServer extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         switch (target) {
+            case "/test":
+                baseRequest.getResponse().getWriter().println("Hello");
+                break;
             case "/nextCommand":
                 synchronized (elevator) {
                     Command nextCommand = elevator.nextCommand();
